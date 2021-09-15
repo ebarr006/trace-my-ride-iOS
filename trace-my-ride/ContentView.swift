@@ -79,6 +79,12 @@ struct LoginView: View {
 
     var body: some View {
         VStack {
+            
+            Image("logo")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 150, height: 150)
+            
             VStack {
                 TextField("Email Address", text: $email)
                     .padding()
