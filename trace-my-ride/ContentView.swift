@@ -7,14 +7,23 @@
 
 import SwiftUI
 
+class AuthUser: ObservableObject {
+    @Published var username: String = ""
+    @Published var email: String = ""
+    @Published var trackingId: String = ""
+    @Published var token: String = ""
+}
+
 struct ContentView: View {
     @State var isAuthenticated: Bool = false
+    @StateObject var user = AuthUser()
 
     var body: some View {
         NavigationView {
             LoginView(isAuthenticated: self.$isAuthenticated)
                 .navigationTitle("Sign In")
         }
+        .environmentObject(user)
     }
 }
 
@@ -34,46 +43,48 @@ struct LoginView: View {
 
     @Binding var isAuthenticated: Bool
     
+    @EnvironmentObject var user: AuthUser
+    
     func login() {
-        let defaults = UserDefaults.standard
         WebService().login(email: email, password: password) { result in
-            switch result {
-            case .success(let loginResponse):
-                guard let decodedResponse = try? JSONDecoder().decode(LoginResponse.self, from: loginResponse) else { return }
-                
-                defaults.setValue(decodedResponse.username, forKey: "username")
-                defaults.setValue(decodedResponse.email, forKey: "email")
-                defaults.setValue(decodedResponse.password, forKey: "password")
-                defaults.setValue(decodedResponse.trackingId, forKey: "trackingId")
-                defaults.setValue(decodedResponse.token, forKey: "token")
-                DispatchQueue.main.async {
-                    self.isAuthenticated = true
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let loginResponse):
+                    guard let decodedResponse = try? JSONDecoder().decode(LoginResponse.self, from: loginResponse) else { return }
+                    self.user.username = decodedResponse.username ?? String("")
+                    self.user.email = decodedResponse.email ?? String("")
+                    self.user.trackingId = decodedResponse.trackingId ?? String("")
+                    self.user.token = decodedResponse.token ?? String("")
+
+                    DispatchQueue.main.async {
+                        self.isAuthenticated = true
+                    }
+                case .failure(let error):
+                    print(error.localizedDescription)
                 }
-            case .failure(let error):
-                print(error.localizedDescription)
             }
         }
     }
     
     func register() {
-        let defaults = UserDefaults.standard
         WebService().register(username: username, email: email, password: password, trackingId: trackingId) { result in
-            switch result {
-            case .success(let registerResponse):
-                guard let decodedResponse = try? JSONDecoder().decode(RegisterResponse.self, from: registerResponse) else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let registerResponse):
+                    guard let decodedResponse = try? JSONDecoder().decode(RegisterResponse.self, from: registerResponse) else { return }
 
-                defaults.setValue(decodedResponse.username, forKey: "username")
-                defaults.setValue(decodedResponse.email, forKey: "email")
-                defaults.setValue(decodedResponse.password, forKey: "password")
-                defaults.setValue(decodedResponse.trackingId, forKey: "trackingId")
-                defaults.setValue(decodedResponse.token, forKey: "token")
-                DispatchQueue.main.async {
-                    self.isAuthenticated = true
+                    self.user.username = decodedResponse.username ?? String("")
+                    self.user.email = decodedResponse.email ?? String("")
+                    self.user.trackingId = decodedResponse.trackingId ?? String("")
+                    self.user.token = decodedResponse.token ?? String("")
+                    
+                    DispatchQueue.main.async {
+                        self.isAuthenticated = true
+                    }
+                case .failure(let error):
+                    print(error.localizedDescription)
                 }
-            case .failure(let error):
-                print(error.localizedDescription)
             }
-//            print(defaults.dictionaryRepresentation())
         }
     }
 
@@ -97,6 +108,8 @@ struct LoginView: View {
                     .background(Color(.secondarySystemBackground))
                     .cornerRadius(4)
                 
+                NavigationLink(destination: MainTrackingView()
+                .navigationBarBackButtonHidden(true), isActive: self.$isAuthenticated) { EmptyView() }
                 Button(action: {
                     login()
                 }, label: {
@@ -176,8 +189,9 @@ struct LoginView: View {
                     .padding()
                     
                     Spacer()
-                }.navigationTitle("Sign Up")
-        }
+                }
+                .navigationTitle("Sign Up")
+            }
         }
     }
 }

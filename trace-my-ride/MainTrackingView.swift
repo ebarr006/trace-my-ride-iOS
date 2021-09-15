@@ -8,8 +8,20 @@
 import SwiftUI
 
 struct MainTrackingView: View {
+    @EnvironmentObject var user: AuthUser
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            VStack {
+                Text("Main Tracking View")
+                Spacer()
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Image(systemName: "gear")
+                }
+            }
+        }
     }
 }
 

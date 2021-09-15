@@ -12,6 +12,7 @@
 		D6CC0E3426F089A800AD45E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6CC0E3326F089A800AD45E0 /* Assets.xcassets */; };
 		D6CC0E3726F089A800AD45E0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6CC0E3626F089A800AD45E0 /* Preview Assets.xcassets */; };
 		D6D475BB26F1200500D91F18 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D475BA26F1200500D91F18 /* WebService.swift */; };
+		D6D475BF26F1E9CA00D91F18 /* MainTrackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D475BE26F1E9CA00D91F18 /* MainTrackingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		D6CC0E3626F089A800AD45E0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D6CC0E3826F089A800AD45E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D6D475BA26F1200500D91F18 /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
+		D6D475BE26F1E9CA00D91F18 /* MainTrackingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTrackingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 			children = (
 				D6CC0E2F26F089A700AD45E0 /* trace_my_rideApp.swift */,
 				D6CC0E3126F089A700AD45E0 /* ContentView.swift */,
+				D6D475BE26F1E9CA00D91F18 /* MainTrackingView.swift */,
 				D6D475BA26F1200500D91F18 /* WebService.swift */,
 				D6CC0E3326F089A800AD45E0 /* Assets.xcassets */,
 				D6CC0E3826F089A800AD45E0 /* Info.plist */,
@@ -141,6 +144,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6D475BF26F1E9CA00D91F18 /* MainTrackingView.swift in Sources */,
 				D6D475BB26F1200500D91F18 /* WebService.swift in Sources */,
 				D6CC0E3226F089A700AD45E0 /* ContentView.swift in Sources */,
 				D6CC0E3026F089A700AD45E0 /* trace_my_rideApp.swift in Sources */,
