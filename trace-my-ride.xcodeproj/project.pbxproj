@@ -12,7 +12,6 @@
 		D6CC0E3426F089A800AD45E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6CC0E3326F089A800AD45E0 /* Assets.xcassets */; };
 		D6CC0E3726F089A800AD45E0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6CC0E3626F089A800AD45E0 /* Preview Assets.xcassets */; };
 		D6D475BB26F1200500D91F18 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D475BA26F1200500D91F18 /* WebService.swift */; };
-		D6D475BD26F184EA00D91F18 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D475BC26F184EA00D91F18 /* SignUpView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,7 +22,6 @@
 		D6CC0E3626F089A800AD45E0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D6CC0E3826F089A800AD45E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D6D475BA26F1200500D91F18 /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
-		D6D475BC26F184EA00D91F18 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,7 +60,6 @@
 				D6CC0E3326F089A800AD45E0 /* Assets.xcassets */,
 				D6CC0E3826F089A800AD45E0 /* Info.plist */,
 				D6CC0E3526F089A800AD45E0 /* Preview Content */,
-				D6D475BC26F184EA00D91F18 /* SignUpView.swift */,
 			);
 			path = "trace-my-ride";
 			sourceTree = "<group>";
@@ -144,7 +141,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6D475BD26F184EA00D91F18 /* SignUpView.swift in Sources */,
 				D6D475BB26F1200500D91F18 /* WebService.swift in Sources */,
 				D6CC0E3226F089A700AD45E0 /* ContentView.swift in Sources */,
 				D6CC0E3026F089A700AD45E0 /* trace_my_rideApp.swift in Sources */,
