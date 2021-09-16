@@ -10,7 +10,6 @@ import SwiftUI
 class AuthUser: ObservableObject {
     @Published var username: String = ""
     @Published var email: String = ""
-    @Published var trackingId: String = ""
     @Published var token: String = ""
 }
 
@@ -37,7 +36,6 @@ struct LoginView: View {
     @State var username: String = ""
     @State var email: String = ""
     @State var password: String = ""
-    @State var trackingId: String = ""
     @State var showRegisterView: Bool = false
     @State var submitError: Bool = false
 
@@ -53,7 +51,6 @@ struct LoginView: View {
                     guard let decodedResponse = try? JSONDecoder().decode(LoginResponse.self, from: loginResponse) else { return }
                     self.user.username = decodedResponse.username ?? String("")
                     self.user.email = decodedResponse.email ?? String("")
-                    self.user.trackingId = decodedResponse.trackingId ?? String("")
                     self.user.token = decodedResponse.token ?? String("")
 
                     DispatchQueue.main.async {
@@ -67,7 +64,7 @@ struct LoginView: View {
     }
     
     func register() {
-        WebService().register(username: username, email: email, password: password, trackingId: trackingId) { result in
+        WebService().register(username: username, email: email, password: password) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let registerResponse):
@@ -75,7 +72,6 @@ struct LoginView: View {
 
                     self.user.username = decodedResponse.username ?? String("")
                     self.user.email = decodedResponse.email ?? String("")
-                    self.user.trackingId = decodedResponse.trackingId ?? String("")
                     self.user.token = decodedResponse.token ?? String("")
                     
                     DispatchQueue.main.async {
@@ -158,15 +154,9 @@ struct LoginView: View {
                             .background(Color(.secondarySystemBackground))
                             .cornerRadius(4)
                         
-                        TextField("Tracking ID", text: $trackingId)
-                            .autocapitalization(.none)
-                            .padding()
-                            .background(Color(.secondarySystemBackground))
-                            .cornerRadius(4)
-                        
                         Button(action: {
                             print("checking")
-                            if username == "" || email == "" || password == "" || trackingId == "" {
+                            if username == "" || email == "" || password == "" {
                                 submitError = true
                             } else {
                                 submitError = false
@@ -179,6 +169,7 @@ struct LoginView: View {
                                 .background(Color.blue)
                                 .cornerRadius(4)
                         })
+                        .padding(.top, 10)
                         
                         if submitError {
                             Text("All fields must be filled out.")

@@ -21,7 +21,6 @@ struct RegisterRequestBody: Codable {
     let username: String
     let email: String
     let password: String
-    let trackingId: String
 }
 
 struct LoginResponse: Codable {
@@ -30,7 +29,6 @@ struct LoginResponse: Codable {
     public let username: String?
     public let email: String?
     public let password: String?
-    public let trackingId: String?
     public let token: String?
 }
 
@@ -40,7 +38,6 @@ struct RegisterResponse: Codable {
     public let username: String?
     public let email: String?
     public let password: String?
-    public let trackingId: String?
     public let token: String?
 }
  
@@ -76,13 +73,13 @@ class WebService: ObservableObject {
         }.resume()
     }
     
-    func register(username: String, email: String, password: String, trackingId: String, completion: @escaping (Result<Data, AuthenticationError>) -> Void) {
+    func register(username: String, email: String, password: String, completion: @escaping (Result<Data, AuthenticationError>) -> Void) {
         guard let url = URL(string: "http://192.168.254.68:3000/login") else {
             completion(.failure(.custom(errorMessage: "URL is not correct")))
             return
         }
         
-        let body = RegisterRequestBody(username: username, email: email, password: password, trackingId: trackingId)
+        let body = RegisterRequestBody(username: username, email: email, password: password)
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
