@@ -11,7 +11,7 @@ struct MainTrackingView: View {
     @EnvironmentObject var user: AuthUser
 
     var body: some View {
-        NavigationView {
+//        NavigationView {
             VStack {
                 VStack {
                     HStack {
@@ -83,14 +83,15 @@ struct MainTrackingView: View {
                 }
             }
             .padding(.bottom, 5)
-        }
-        .navigationBarTitle("")
-        .navigationBarHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Image(systemName: "gear")
-            }
-        }
+            .navigationBarBackButtonHidden(/*@START_MENU_TOKEN@*/false/*@END_MENU_TOKEN@*/)
+//        }
+//        .navigationBarTitle("")
+//        .navigationBarHidden(true)
+//        .toolbar {
+//            ToolbarItem(placement: .navigationBarTrailing) {
+//                Image(systemName: "gear")
+//            }
+//        }
 //        .navigationBarTitleDisplayMode(.inline)
     }
 }

@@ -19,6 +19,7 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
+//            MainView()
             LoginView(isAuthenticated: self.$isAuthenticated)
                 .navigationTitle("Sign In")
         }
