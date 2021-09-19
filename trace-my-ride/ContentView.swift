@@ -104,7 +104,8 @@ struct LoginView: View {
                     .background(Color(.secondarySystemBackground))
                     .cornerRadius(4)
                 
-                NavigationLink(destination: MainTrackingView()
+//                NavigationLink(destination: MainTrackingView()
+                NavigationLink(destination: MainView()
                 .navigationBarBackButtonHidden(true), isActive: self.$isAuthenticated) { EmptyView() }
                 Button(action: {
                     login()

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D68334B426F6C4960035BE1F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68334B326F6C4960035BE1F /* MainView.swift */; };
 		D6CC0E3026F089A700AD45E0 /* trace_my_rideApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CC0E2F26F089A700AD45E0 /* trace_my_rideApp.swift */; };
 		D6CC0E3226F089A700AD45E0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CC0E3126F089A700AD45E0 /* ContentView.swift */; };
 		D6CC0E3426F089A800AD45E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6CC0E3326F089A800AD45E0 /* Assets.xcassets */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D68334B326F6C4960035BE1F /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		D6CC0E2C26F089A700AD45E0 /* trace-my-ride.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "trace-my-ride.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6CC0E2F26F089A700AD45E0 /* trace_my_rideApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = trace_my_rideApp.swift; sourceTree = "<group>"; };
 		D6CC0E3126F089A700AD45E0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 				D6CC0E3126F089A700AD45E0 /* ContentView.swift */,
 				D6D475BE26F1E9CA00D91F18 /* MainTrackingView.swift */,
 				D6D475BA26F1200500D91F18 /* WebService.swift */,
+				D68334B326F6C4960035BE1F /* MainView.swift */,
 				D6CC0E3326F089A800AD45E0 /* Assets.xcassets */,
 				D6CC0E3826F089A800AD45E0 /* Info.plist */,
 				D6CC0E3526F089A800AD45E0 /* Preview Content */,
@@ -147,6 +150,7 @@
 				D6D475BF26F1E9CA00D91F18 /* MainTrackingView.swift in Sources */,
 				D6D475BB26F1200500D91F18 /* WebService.swift in Sources */,
 				D6CC0E3226F089A700AD45E0 /* ContentView.swift in Sources */,
+				D68334B426F6C4960035BE1F /* MainView.swift in Sources */,
 				D6CC0E3026F089A700AD45E0 /* trace_my_rideApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

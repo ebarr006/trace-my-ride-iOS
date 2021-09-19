@@ -44,6 +44,8 @@ struct RegisterResponse: Codable {
 
 class WebService: ObservableObject {
     func login(email: String, password: String, completion: @escaping (Result<Data, AuthenticationError>) -> Void) {
+        
+        print("LOGIN CALLED")
         guard let url = URL(string: "http://192.168.254.68:3000/login") else {
             completion(.failure(.custom(errorMessage: "URL is not correct")))
             return
@@ -57,10 +59,16 @@ class WebService: ObservableObject {
         request.httpBody = try? JSONEncoder().encode(body)
         
         URLSession.shared.dataTask(with: request) {(data, response, error) in
+            print("HERE");
             guard let data = data, error == nil else {
                 completion(.failure(.custom(errorMessage: "no data")))
                 return
             }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                print("statusCode: \(httpResponse.statusCode)")
+            }
+            
             print("[LOGIN]: data received")
             
             guard let loginResponse = try? JSONDecoder().decode(LoginResponse.self, from: data) else {
@@ -74,7 +82,7 @@ class WebService: ObservableObject {
     }
     
     func register(username: String, email: String, password: String, completion: @escaping (Result<Data, AuthenticationError>) -> Void) {
-        guard let url = URL(string: "http://192.168.254.68:3000/login") else {
+        guard let url = URL(string: "http://192.168.254.68:3000/register") else {
             completion(.failure(.custom(errorMessage: "URL is not correct")))
             return
         }
