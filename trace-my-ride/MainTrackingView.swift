@@ -9,90 +9,83 @@ import SwiftUI
 
 struct MainTrackingView: View {
     @EnvironmentObject var user: AuthUser
-
+    
+    @State var tripName: String = ""
+    @State var description: String = ""
+    
     var body: some View {
-//        NavigationView {
+        VStack {
             VStack {
-                VStack {
-                    HStack {
-                        Spacer()
-                        
-                        VStack (alignment: .leading) {
-                            IconTextPair(symbol: "person.fill", symbolSize: 15, circleSize: 30, TODO_stat: "Username", leftAlign: true)
-                            IconTextPair(symbol: "map.fill", symbolSize: 15, circleSize: 30, TODO_stat: "Trip Name", leftAlign: true)
-                            IconTextPair(symbol: "arrow.triangle.swap", symbolSize: 15, circleSize: 30, TODO_stat: "Miles", leftAlign: true)
-                            IconTextPair(symbol: "pin.fill", symbolSize: 15, circleSize: 30, TODO_stat: "45" + " pins", leftAlign: true)
-                        }
-                        .frame(width: 210, height: 220)
-                        .background(Color.blue)
-                        .cornerRadius(20)
-                        .shadow(color: Color.blue.opacity(0.3), radius: 30, x: 0, y: 20)
-                        .shadow(color: Color.blue.opacity(0.2), radius: 10, x: 0, y: 6)
-                        
-                        Spacer()
-                            
-                        VStack {
-                            Text("Placeholder")
-                                .foregroundColor(.white)
-                                .bold()
-                        }
-                        .frame(width: 140, height: 220)
-                        .background(Color.blue)
-                        .cornerRadius(20)
-                        .shadow(color: Color.blue.opacity(0.3), radius: 30, x: 0, y: 20)
-                        .shadow(color: Color.blue.opacity(0.2), radius: 10, x: 0, y: 6)
-                        
-                        Spacer()
-                    }
-                    .padding(.bottom, 6)
-                    
-                    VStack {
-                        Text("PLACEHOLDER")
-                            .font(.title).bold()
-                            .foregroundColor(.white)
-                            .shadow(radius: 10)
-                    }
-                    .frame(width: 360, height: 200)
-                    .background(Color.blue)
-                    .cornerRadius(20)
-                    .shadow(color: Color.blue.opacity(0.3), radius: 30, x: 0, y: 24)
-                    .shadow(color: Color.blue.opacity(0.2), radius: 20, x: 0, y: 6)
-                    .padding(.leading, 5)
-                    .padding(.trailing, 5)
-                    
+                HStack {
                     Spacer()
                     
-                    HStack {
-                        Button(action: { print("stop") }) {
-                            Image(systemName: "xmark.circle.fill")
-                                .resizable()
-                                .foregroundColor(.red)
-                                .frame(width: 70, height: 70)
-                                .shadow(color: Color.red.opacity(0.3), radius: 8, x: 0, y: 5)
-                                .shadow(color: Color.red.opacity(0.1), radius: 8, x: 0, y: 5)
-                        }.padding()
-                        Button(action: { print("start") }) {
-                            Image(systemName: "play.circle.fill")
-                                .resizable()
-                                .foregroundColor(.green)
-                                .frame(width: 70, height: 70)
-                                .shadow(color: Color.green.opacity(0.3), radius: 8, x: 0, y: 5)
-                                .shadow(color: Color.green.opacity(0.1), radius: 8, x: 0, y: 5)
-                        }
+                    VStack (alignment: .leading) {
+                        IconTextPair(symbol: "person.fill", symbolSize: 15, circleSize: 30, TODO_stat: "\(self.user.username)", leftAlign: true)
+                        IconTextPair(symbol: "map.fill", symbolSize: 15, circleSize: 30, TODO_stat: "\((self.user.trips?[0].name)!)", leftAlign: true)
+                        IconTextPair(symbol: "arrow.triangle.swap", symbolSize: 15, circleSize: 30, TODO_stat: "\((self.user.trips?[0].mileage)!) miles", leftAlign: true)
+                        IconTextPair(symbol: "pin.fill", symbolSize: 15, circleSize: 30, TODO_stat: "\((self.user.trips?[0].pinCount)!)" + " pins", leftAlign: true)
+                    }
+                    .frame(width: 210, height: 220)
+                    .background(Color.blue)
+                    .cornerRadius(20)
+                    .shadow(color: Color.blue.opacity(0.3), radius: 30, x: 0, y: 20)
+                    .shadow(color: Color.blue.opacity(0.2), radius: 10, x: 0, y: 6)
+                    
+                    Spacer()
+                        
+                    VStack {
+                        Text("Placeholder")
+                            .foregroundColor(.white)
+                            .bold()
+                    }
+                    .frame(width: 140, height: 220)
+                    .background(Color.blue)
+                    .cornerRadius(20)
+                    .shadow(color: Color.blue.opacity(0.3), radius: 30, x: 0, y: 20)
+                    .shadow(color: Color.blue.opacity(0.2), radius: 10, x: 0, y: 6)
+                    
+                    Spacer()
+                }
+                .padding(.bottom, 6)
+                
+                VStack {
+                    Text("PLACEHOLDER")
+                        .font(.title).bold()
+                        .foregroundColor(.white)
+                        .shadow(radius: 10)
+                }
+                .frame(width: 360, height: 200)
+                .background(Color.blue)
+                .cornerRadius(20)
+                .shadow(color: Color.blue.opacity(0.3), radius: 30, x: 0, y: 24)
+                .shadow(color: Color.blue.opacity(0.2), radius: 20, x: 0, y: 6)
+                .padding(.leading, 5)
+                .padding(.trailing, 5)
+                
+                Spacer()
+                
+                HStack {
+                    Button(action: { print("stop") }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .resizable()
+                            .foregroundColor(.red)
+                            .frame(width: 70, height: 70)
+                            .shadow(color: Color.red.opacity(0.3), radius: 8, x: 0, y: 5)
+                            .shadow(color: Color.red.opacity(0.1), radius: 8, x: 0, y: 5)
+                    }.padding()
+                    Button(action: { print("start") }) {
+                        Image(systemName: "play.circle.fill")
+                            .resizable()
+                            .foregroundColor(.green)
+                            .frame(width: 70, height: 70)
+                            .shadow(color: Color.green.opacity(0.3), radius: 8, x: 0, y: 5)
+                            .shadow(color: Color.green.opacity(0.1), radius: 8, x: 0, y: 5)
                     }
                 }
             }
-            .padding(.bottom, 5)
-            .navigationBarBackButtonHidden(/*@START_MENU_TOKEN@*/false/*@END_MENU_TOKEN@*/)
-//        }
-//        .navigationBarTitle("")
-//        .navigationBarHidden(true)
-//        .toolbar {
-//            ToolbarItem(placement: .navigationBarTrailing) {
-//                Image(systemName: "gear")
-//            }
-//        }
-//        .navigationBarTitleDisplayMode(.inline)
+        }
+        .padding(.bottom, 5)
+        .navigationBarBackButtonHidden(/*@START_MENU_TOKEN@*/false/*@END_MENU_TOKEN@*/)
     }
 }
 

@@ -7,45 +7,8 @@
 
 import Foundation
 
-enum AuthenticationError: Error {
-    case invalidCredentials
-    case custom(errorMessage: String)
-}
-
-struct LoginRequestBody: Codable {
-    let email: String
-    let password: String
-}
-
-struct RegisterRequestBody: Codable {
-    let username: String
-    let email: String
-    let password: String
-}
-
-struct LoginResponse: Codable {
-    public let _id: String?
-    public let __v: Int?
-    public let username: String?
-    public let email: String?
-    public let password: String?
-    public let token: String?
-}
-
-struct RegisterResponse: Codable {
-    public let _id: String?
-    public let __v: Int?
-    public let username: String?
-    public let email: String?
-    public let password: String?
-    public let token: String?
-}
- 
-
 class WebService: ObservableObject {
     func login(email: String, password: String, completion: @escaping (Result<Data, AuthenticationError>) -> Void) {
-        
-        print("LOGIN CALLED")
         guard let url = URL(string: "http://192.168.254.68:3000/login") else {
             completion(.failure(.custom(errorMessage: "URL is not correct")))
             return
@@ -59,25 +22,23 @@ class WebService: ObservableObject {
         request.httpBody = try? JSONEncoder().encode(body)
         
         URLSession.shared.dataTask(with: request) {(data, response, error) in
-            print("HERE");
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                print("statusCode: \(httpResponse.statusCode)")
+                
+                if httpResponse.statusCode != 200 {
+                    completion(.failure(.invalidCredentials))
+                    return
+                }
+            }
+            
             guard let data = data, error == nil else {
                 completion(.failure(.custom(errorMessage: "no data")))
                 return
             }
-            
-            if let httpResponse = response as? HTTPURLResponse {
-                print("statusCode: \(httpResponse.statusCode)")
-            }
-            
-            print("[LOGIN]: data received")
-            
-            guard let loginResponse = try? JSONDecoder().decode(LoginResponse.self, from: data) else {
-                completion(.failure(.invalidCredentials))
-                return
-            }
-            print("[LOGIN]: data decoded")
-            print("[LOGIN] snippet: " + loginResponse.username!)
+
             completion(.success(data))
+
         }.resume()
     }
     
@@ -95,19 +56,89 @@ class WebService: ObservableObject {
         request.httpBody = try? JSONEncoder().encode(body)
         
         URLSession.shared.dataTask(with: request) {(data, response, error) in
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                
+                if httpResponse.statusCode != 201 {
+                    completion(.failure(.invalidCredentials))
+                    return
+                }
+            }
+            
             guard let data = data, error == nil else {
                 completion(.failure(.custom(errorMessage: "no data")))
                 return
             }
-            print("[REGISTER]: data received")
             
-            guard let registerResponse = try? JSONDecoder().decode(RegisterResponse.self, from: data) else {
+            guard let registerResponse = try? JSONDecoder().decode(UserObject.self, from: data) else {
                 completion(.failure(.invalidCredentials))
                 return
             }
-            print("[REGISTER]: data decoded")
             print("[REGISTER] snippet: " + registerResponse.username!)
+            
+            completion(.success(data))
+            
+        }.resume()
+    }
+    
+    func createTrip(name: String, description: String, token: String, completion: @escaping (Result<Data, AuthenticationError>) -> Void) {
+        guard let url = URL(string: "http://192.168.254.68:3000/api/trips") else {
+            completion(.failure(.custom(errorMessage: "URL is not correct")))
+            return
         }
         
+        let body = CreateTripBody(name: name, description: description)
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue(token, forHTTPHeaderField: "x-access-token")
+        request.httpBody = try? JSONEncoder().encode(body)
+        
+        URLSession.shared.dataTask(with: request) {(data, response, error) in
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                
+                if httpResponse.statusCode != 201 {
+                    completion(.failure(.custom(errorMessage: "incorrect status code returned")))
+                    return
+                }
+            }
+            
+            guard let data = data, error == nil else {
+                completion(.failure(.custom(errorMessage: "no data")))
+                return
+            }
+            
+            guard let createTripResponse = try? JSONDecoder().decode(TripObject.self, from: data) else {
+                completion(.failure(.invalidCredentials))
+                return
+            }
+            print("[CREATE TRIP] snippet: " + createTripResponse.description!)
+            
+            completion(.success(data))
+            
+        }.resume()
     }
+    
 }
+
+// useful JSON debugging
+//
+//if let data = data {
+//  do {
+//    let decodedResponse = try JSONDecoder().decode(UserObject.self, from: data)
+//    print(decodedResponse.username ?? "hi")
+//  } catch DecodingError.keyNotFound(let key, let context) {
+//    Swift.print("could not find key \(key) in JSON: \(context.debugDescription)")
+//} catch DecodingError.valueNotFound(let type, let context) {
+//    Swift.print("could not find type \(type) in JSON: \(context.debugDescription)")
+//} catch DecodingError.typeMismatch(let type, let context) {
+//    Swift.print("type mismatch for type \(type) in JSON: \(context.debugDescription). \(context)")
+//} catch DecodingError.dataCorrupted(let context) {
+//    Swift.print("data found to be corrupted in JSON: \(context.debugDescription)")
+//} catch let error as NSError {
+//    NSLog("Error in read(from:ofType:) domain= \(error.domain), description= \(error.localizedDescription)")
+//}
+//  return
+//}

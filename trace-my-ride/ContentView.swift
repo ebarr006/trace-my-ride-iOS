@@ -8,9 +8,12 @@
 import SwiftUI
 
 class AuthUser: ObservableObject {
+    @Published var id: String = ""
     @Published var username: String = ""
     @Published var email: String = ""
-    @Published var token: String = ""
+    @Published var tripId: String = ""
+    @Published var trips: [TripObject]?
+    var token: String = ""
 }
 
 struct ContentView: View {
@@ -19,7 +22,6 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-//            MainView()
             LoginView(isAuthenticated: self.$isAuthenticated)
                 .navigationTitle("Sign In")
         }
@@ -49,13 +51,20 @@ struct LoginView: View {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let loginResponse):
-                    guard let decodedResponse = try? JSONDecoder().decode(LoginResponse.self, from: loginResponse) else { return }
+                    guard let decodedResponse = try? JSONDecoder().decode(UserObject.self, from: loginResponse) else { return }
+                    
+                    self.user.id = decodedResponse.id ?? String("")
                     self.user.username = decodedResponse.username ?? String("")
                     self.user.email = decodedResponse.email ?? String("")
+                    self.user.trips = decodedResponse.trips ?? []
                     self.user.token = decodedResponse.token ?? String("")
-
-                    DispatchQueue.main.async {
-                        self.isAuthenticated = true
+                    
+                    self.isAuthenticated = true
+                    
+                    if (self.user.trips?.isEmpty == true) {
+                        print("empty")
+                    } else {
+                        print("self.user.trips: \(String(describing: self.user.trips?[0].name))")
                     }
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -69,11 +78,10 @@ struct LoginView: View {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let registerResponse):
-                    guard let decodedResponse = try? JSONDecoder().decode(RegisterResponse.self, from: registerResponse) else { return }
+                    guard let decodedResponse = try? JSONDecoder().decode(UserObject.self, from: registerResponse) else { return }
 
                     self.user.username = decodedResponse.username ?? String("")
                     self.user.email = decodedResponse.email ?? String("")
-                    self.user.token = decodedResponse.token ?? String("")
                     
                     DispatchQueue.main.async {
                         self.isAuthenticated = true
@@ -87,7 +95,6 @@ struct LoginView: View {
 
     var body: some View {
         VStack {
-            
             Image("logo")
                 .resizable()
                 .scaledToFit()
@@ -104,8 +111,7 @@ struct LoginView: View {
                     .padding()
                     .background(Color(.secondarySystemBackground))
                     .cornerRadius(4)
-                
-//                NavigationLink(destination: MainTrackingView()
+
                 NavigationLink(destination: MainView()
                 .navigationBarBackButtonHidden(true), isActive: self.$isAuthenticated) { EmptyView() }
                 Button(action: {
@@ -157,12 +163,14 @@ struct LoginView: View {
                             .cornerRadius(4)
                         
                         Button(action: {
-                            print("checking")
                             if username == "" || email == "" || password == "" {
                                 submitError = true
                             } else {
                                 submitError = false
                                 self.showRegisterView = false
+                            }
+                            if (!submitError) {
+                                register()
                             }
                         }, label: {
                             Text("Submit")
