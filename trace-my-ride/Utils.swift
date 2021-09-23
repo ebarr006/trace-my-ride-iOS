@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import CoreLocation
 
 enum AuthenticationError: Error {
     case invalidCredentials
@@ -29,6 +30,12 @@ struct CreateTripBody: Codable {
     let description: String
 }
 
+struct PinPacket: Codable {
+    let tripId: String
+    let lat: Double
+    let lng: Double
+}
+
 class TripObject: Codable, ObservableObject {
     public var id: String?
     public var name: String?
@@ -44,8 +51,14 @@ class TripObject: Codable, ObservableObject {
 class UserObject: Codable, ObservableObject {
     public let id: String?
     public let username: String?
-    public let email: String?
-    public let password: String?
     public let trips: [TripObject]?
     public let token: String?
+}
+
+class PinObject: Codable, ObservableObject {
+    public let id: String
+    public let date: String
+    public let lat: String
+    public let lng: String
+    public let tripId: String
 }

@@ -82,12 +82,53 @@ class WebService: ObservableObject {
     }
     
     func createTrip(name: String, description: String, token: String, completion: @escaping (Result<Data, AuthenticationError>) -> Void) {
-        guard let url = URL(string: "http://192.168.254.68:3000/api/trips") else {
+        guard let url = URL(string: "http://192.168.254.68:3000/api/trips/ios/create") else {
             completion(.failure(.custom(errorMessage: "URL is not correct")))
             return
         }
         
         let body = CreateTripBody(name: name, description: description)
+        
+        var request = URLRequest(url: url)
+        print("here")
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue(token, forHTTPHeaderField: "x-access-token")
+        request.httpBody = try? JSONEncoder().encode(body)
+        print("here2")
+        URLSession.shared.dataTask(with: request) {(data, response, error) in
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                print("\(httpResponse.statusCode)")
+                if httpResponse.statusCode != 201 {
+                    completion(.failure(.custom(errorMessage: "incorrect status code returned")))
+                    return
+                }
+            }
+            
+            guard let data = data, error == nil else {
+                completion(.failure(.custom(errorMessage: "no data")))
+                return
+            }
+            
+            guard let createTripResponse = try? JSONDecoder().decode(TripObject.self, from: data) else {
+                completion(.failure(.invalidCredentials))
+                return
+            }
+            print("[CREATE TRIP] snippet: " + createTripResponse.description!)
+            
+            completion(.success(data))
+            
+        }.resume()
+    }
+    
+    func createPin(tripId: String, lat: Double, lng: Double, token: String, completion: @escaping (Result<Data, AuthenticationError>) -> Void) {
+        guard let url = URL(string: "http://192.168.254.68:3000/api/trips/ios/create/pin") else {
+            completion(.failure(.custom(errorMessage: "URL is not correct")))
+            return
+        }
+        
+        let body = PinPacket(tripId: tripId, lat: lat, lng: lng)
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -109,12 +150,6 @@ class WebService: ObservableObject {
                 completion(.failure(.custom(errorMessage: "no data")))
                 return
             }
-            
-            guard let createTripResponse = try? JSONDecoder().decode(TripObject.self, from: data) else {
-                completion(.failure(.invalidCredentials))
-                return
-            }
-            print("[CREATE TRIP] snippet: " + createTripResponse.description!)
             
             completion(.success(data))
             

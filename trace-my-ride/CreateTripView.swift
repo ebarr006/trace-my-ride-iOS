@@ -27,7 +27,7 @@ struct CreateTripView: View {
                     self.user.trips?.append(decodedResponse)
                     
                     print("self.user.username: \(self.user.username)")
-                    print("self.user.trips[0]: \(String(describing: self.user.trips?[0].name))")
+                    print("self.user.trips[0]: \((self.user.trips?[0].name)!)")
                     
                 case .failure(let error):
                     print(error.localizedDescription)

@@ -10,8 +10,6 @@ import SwiftUI
 class AuthUser: ObservableObject {
     @Published var id: String = ""
     @Published var username: String = ""
-    @Published var email: String = ""
-    @Published var tripId: String = ""
     @Published var trips: [TripObject]?
     var token: String = ""
 }
@@ -25,6 +23,7 @@ struct ContentView: View {
             LoginView(isAuthenticated: self.$isAuthenticated)
                 .navigationTitle("Sign In")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .environmentObject(user)
     }
 }
@@ -55,7 +54,6 @@ struct LoginView: View {
                     
                     self.user.id = decodedResponse.id ?? String("")
                     self.user.username = decodedResponse.username ?? String("")
-                    self.user.email = decodedResponse.email ?? String("")
                     self.user.trips = decodedResponse.trips ?? []
                     self.user.token = decodedResponse.token ?? String("")
                     
@@ -80,8 +78,10 @@ struct LoginView: View {
                 case .success(let registerResponse):
                     guard let decodedResponse = try? JSONDecoder().decode(UserObject.self, from: registerResponse) else { return }
 
+                    self.user.id = decodedResponse.id ?? String("")
                     self.user.username = decodedResponse.username ?? String("")
-                    self.user.email = decodedResponse.email ?? String("")
+                    self.user.trips = decodedResponse.trips ?? []
+                    self.user.token = decodedResponse.token ?? String("")
                     
                     DispatchQueue.main.async {
                         self.isAuthenticated = true
@@ -141,57 +141,60 @@ struct LoginView: View {
             Spacer()
         }
         .sheet(isPresented: self.$showRegisterView) {
-            NavigationView {
+            VStack {
                 VStack {
-                    VStack {
-                        TextField("Username", text: $username)
-                            .autocapitalization(.none)
-                            .padding()
-                            .background(Color(.secondarySystemBackground))
-                            .cornerRadius(4)
+                    Text("Sign Up")
+                        .font(.system(size: 30))
+                        .fontWeight(.semibold)
+                        .padding(.leading, 16)
+                        .padding(.bottom, 20)
+    
+                    TextField("Username", text: $username)
+                        .autocapitalization(.none)
+                        .padding()
+                        .background(Color(.secondarySystemBackground))
+                        .cornerRadius(4)
 
-                        TextField("Email Address", text: $email)
-                            .autocapitalization(.none)
-                            .padding()
-                            .background(Color(.secondarySystemBackground))
-                            .cornerRadius(4)
-                            
-                        SecureField("Password", text: $password)
-                            .autocapitalization(.none)
-                            .padding()
-                            .background(Color(.secondarySystemBackground))
-                            .cornerRadius(4)
+                    TextField("Email Address", text: $email)
+                        .autocapitalization(.none)
+                        .padding()
+                        .background(Color(.secondarySystemBackground))
+                        .cornerRadius(4)
                         
-                        Button(action: {
-                            if username == "" || email == "" || password == "" {
-                                submitError = true
-                            } else {
-                                submitError = false
-                                self.showRegisterView = false
-                            }
-                            if (!submitError) {
-                                register()
-                            }
-                        }, label: {
-                            Text("Submit")
-                                .foregroundColor(Color.white)
-                                .frame(width: 200, height: 50)
-                                .background(Color.blue)
-                                .cornerRadius(4)
-                        })
-                        .padding(.top, 10)
-                        
-                        if submitError {
-                            Text("All fields must be filled out.")
-                                .foregroundColor(.red)
-                                .padding(.top, 5)
-                        }
-                    }
-                    .padding()
+                    SecureField("Password", text: $password)
+                        .autocapitalization(.none)
+                        .padding()
+                        .background(Color(.secondarySystemBackground))
+                        .cornerRadius(4)
                     
-                    Spacer()
+                    Button(action: {
+                        if username == "" || email == "" || password == "" {
+                            submitError = true
+                        } else {
+                            submitError = false
+                            self.showRegisterView = false
+                        }
+                        if (!submitError) {
+                            register()
+                        }
+                    }, label: {
+                        Text("Submit")
+                            .foregroundColor(Color.white)
+                            .frame(width: 200, height: 50)
+                            .background(Color.blue)
+                            .cornerRadius(4)
+                    })
+                    .padding(.top, 10)
+                    
+                    if submitError {
+                        Text("All fields must be filled out.")
+                            .foregroundColor(.red)
+                            .padding(.top, 5)
+                    }
                 }
-                .navigationTitle("Sign Up")
+                .padding()
+                
+                Spacer()
             }
         }
     }

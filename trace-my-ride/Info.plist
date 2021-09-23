@@ -20,6 +20,14 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app uses your location to map your ride.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app uses your location to map your ride.</string>
+	<key>NSLocationAlwaysUseDescription</key>
+	<string>asdfadf</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app uses your location to map your ride.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -27,6 +35,10 @@
 	</dict>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>UIRequiredDeviceCapabilities</key>

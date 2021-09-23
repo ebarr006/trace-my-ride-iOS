@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     @EnvironmentObject var user: AuthUser
-    
+
     @State var showNewTripFlow: Bool = false
 
     var body: some View {
@@ -24,7 +24,7 @@ struct MainView: View {
                 Spacer()
                 
                 NavigationLink(
-                destination: UserProfileView(),
+                destination: SettingsView(),
                     label:  {
                     VStack {
                             ZStack {
@@ -48,7 +48,7 @@ struct MainView: View {
                 Spacer()
                 
                 NavigationLink(
-                    destination: UserProfileView(),
+                    destination: SettingsView(),
                         label: {
                         VStack {
                                 ZStack {
@@ -99,36 +99,6 @@ struct MainView: View {
 
                 Spacer()
                 
-//                NavigationLink(
-//                    destination: VStack {
-//                        if self.showNewTripFlow == true {
-//                            CreateTripView(showNewTripFlow: self.$showNewTripFlow)
-//                        } else {
-//                            MainTrackingView()
-//                        }
-//                    },
-//                    label: {
-//                        VStack {
-//                            ZStack {
-//                                Circle()
-//                                    .fill(Color.white)
-//                                    .frame(width: 110, height: 110)
-//
-//                                Image(systemName: "plus")
-//                                    .resizable()
-//                                    .foregroundColor(Color(.systemGreen))
-//                                    .frame(width: 50, height: 50)
-//
-//                            }
-//                        }
-//                        .frame(width: 170, height: 170)
-//                        .background(Color(.systemGreen).opacity(0.9))
-//                        .cornerRadius(20)
-//                        .shadow(color: Color.black.opacity(0.3), radius: 30, x: 0, y: 12)
-//                        .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 12)
-//                    }
-//                )
-                
                 if self.showNewTripFlow == true {
                     NavigationLink(
                         destination: CreateTripView(showNewTripFlow: self.$showNewTripFlow),
@@ -155,7 +125,7 @@ struct MainView: View {
                     )
                 } else {
                     NavigationLink(
-                        destination: MainTrackingView(),
+                        destination: MainTrackingView().environmentObject(user),
                         label: {
                             VStack {
                                 ZStack {
